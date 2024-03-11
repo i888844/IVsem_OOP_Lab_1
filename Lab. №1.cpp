@@ -43,7 +43,7 @@ public:
 
     ~Item() { }
 
-	string get_name() { return name; }
+    string get_name() { return name; }
 
     int get_amount() { return amount; }
 
@@ -130,11 +130,11 @@ public:
 
     Element(const Element &src_object)
     {
-	    if (this != &src_object)
-	    {
+        if (this != &src_object)
+        {
             data = new Item(*src_object.data);
             previous = src_object.previous;
-	    }
+        }
     }
 
     ~Element()
@@ -144,12 +144,12 @@ public:
 
     Element& operator = (const Element &src_object)
     {
-	    if (this != &src_object)
-	    {
+        if (this != &src_object)
+        {
             if (this->data != nullptr) { delete data; }
             data = new Item(*src_object.data);
             previous = src_object.previous;
-	    }
+        }
         return *this;
     }
 
@@ -223,11 +223,11 @@ public:
 
         while (head != nullptr)
         {
-	        if (head->get_name() == required_name)
-	        {
+            if (head->get_name() == required_name)
+            {
                 temp = new Element(*head);
                 break;
-	        }
+            }
             object.add_Element(*delete_Element());
         }
 
@@ -254,10 +254,10 @@ public:
                 }
                 else
                 {
-	                if (temp->get_purchase_year() > head->get_purchase_year())
-	                {
+                    if (temp->get_purchase_year() > head->get_purchase_year())
+                    {
                         first_object.add_Element(*delete_Element());
-	                }
+                    }
                     else
                     {
                         first_object.add_Element(*temp);
@@ -274,7 +274,7 @@ public:
 
             while (first_object.head != nullptr)
             {
-	            add_Element(*first_object.delete_Element());
+                add_Element(*first_object.delete_Element());
             }
         }
 
@@ -286,8 +286,8 @@ public:
 
     void output()
     {
-	    if (head != nullptr)
-	    {
+        if (head != nullptr)
+        {
             LIFO temp;
 
             while (head != nullptr) { temp.add_Element(*delete_Element()); }
@@ -299,7 +299,7 @@ public:
                 add_Element(*temp.delete_Element());
                 head->output();
             }
-	    }
+        }
         else
         {
             cout << "[Ошибка]: стек пуст." << endl;
@@ -368,27 +368,27 @@ int main()
         {
             cout << "[Ошибка]: введено недопустимое значение команды, повторите попытку: ";
 
-        	cin >> cmd;
+            cin >> cmd;
 
             cout << endl;
         }
 
         switch (cmd)
         {
-	        case 0:
+            case 0:
             {
-	            break;
-		    }
-	        case 1:
-		    {
+                break;
+            }
+            case 1:
+            {
                 Stack.output();
-	            break;
-		    }
+                break;
+            }
             case 2:
             {
                 cout << "Введите искомое наименование: ";
 
-	        	string required_name = "";
+                string required_name = "";
 
                 cin >> required_name;
 
@@ -413,21 +413,24 @@ int main()
                     cout << "[Ошибка]: запись с наименованием \"" << required_name << "\" не найдена." << endl;
                 }
 
-	        	break;
+                break;
             }
             case 3:
             {
                 Stack.sort_by_purchase_year();
+
                 break;
             }
             case 4:
             {
                 // TODO: Вывести записи предметов, подлежащих списанию в заданный год
+
                 break;
             }
             case 5:
             {
                 // TODO: Вывести 5 записей самых долгосрочных предметов
+
                 break;
             }
             case 6:
@@ -486,8 +489,8 @@ int main()
 
                 break;
             }
-			case 7:
-		    {
+            case 7:
+            {
                 cout << "Удалиние записи:" << endl;
 
                 string name = "";
@@ -506,7 +509,7 @@ int main()
                 // TODO: Удаление элемента стека по наименованию
 
                 break;
-		    }
+            }
 
         }
     } while (cmd != 0);
