@@ -198,6 +198,43 @@ public:
         return temp;
     }
 
+    void delete_Element_by_name(const string name)
+	{
+        if (head == nullptr)
+        {
+            cout << "[Ошибка]: Стек пуст." << endl;
+            return;
+        }
+
+        Element* current = head;
+        Element* prev = nullptr;
+
+        while (current != nullptr)
+        {
+            if (current->get_name() == name)
+            {
+                if (prev == nullptr)
+                {
+                    head = current->previous;
+                }
+                else
+                {
+                    prev->previous = current->previous;
+                }
+
+                delete current;
+
+                cout << "Запись \"" << name << "\" успешно удалена." << endl;
+
+                return;
+            }
+            prev = current;
+            current = current->previous;
+        }
+
+        cout << "Запись с наименованием \"" << name << "\" не найдена." << endl;
+    }
+
     void add_Element(Element &src_object)
     {
         Element* temp = new Element(src_object);
@@ -303,6 +340,62 @@ public:
         else
         {
             cout << "[Ошибка]: стек пуст." << endl;
+        }
+    }
+
+    void output_top_five_by_lifetime()
+	{
+        if (head == nullptr)
+        {
+            cout << "[Ошибка]: стек пуст." << endl;
+            return;
+        }
+
+        cout << "Самые долгосрочные предметы:" << endl;
+        cout << "Наименование   " << "Количество   " << "Год приобретения   " << "Срок службы   " << endl;
+
+        LIFO outputted_elements;
+
+        for (int i = 0; i < 5; i++)
+        {
+            Element* current = head;
+            Element* max_lifetime_element = nullptr;
+
+            while (current != nullptr)
+            {
+                if (outputted_elements.search_by_name(current->get_name()) == nullptr &&
+                    (max_lifetime_element == nullptr || current->get_lifetime() > max_lifetime_element->get_lifetime()))
+                {
+                    max_lifetime_element = current;
+                }
+                current = current->previous;
+            }
+
+            if (max_lifetime_element != nullptr)
+            {
+                max_lifetime_element->output();
+                outputted_elements.add_Element(*max_lifetime_element);
+            }
+        }
+    }
+
+    void output_items_to_write_off(const unsigned int year)
+	{
+        if (head == nullptr)
+        {
+            cout << "[Ошибка]: стек пуст." << endl;
+            return;
+        }
+
+        Element* current = head;
+
+        while (current != nullptr)
+        {
+            if (current->get_purchase_year() + current->get_lifetime() <= year)
+            {
+                current->output();
+            }
+            current = current->previous;
         }
     }
 };
@@ -423,13 +516,19 @@ int main()
             }
             case 4:
             {
-                // TODO: Вывести записи предметов, подлежащих списанию в заданный год
+                int year = 0;
+
+                cout << "Введите год: ";
+
+                cin >> year;
+
+                Stack.output_items_to_write_off(year);
 
                 break;
             }
             case 5:
             {
-                // TODO: Вывести 5 записей самых долгосрочных предметов
+                Stack.output_top_five_by_lifetime();
 
                 break;
             }
@@ -504,9 +603,7 @@ int main()
                     cin >> name;
                 }
 
-                Stack.search_by_name(name);
-
-                // TODO: Удаление элемента стека по наименованию
+                Stack.delete_Element_by_name(name);
 
                 break;
             }
