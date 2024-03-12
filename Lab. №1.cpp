@@ -189,50 +189,53 @@ public:
         Element* temp;
         temp = nullptr;
 
+        Element* prev;
+
         if (head != nullptr)
         {
             temp = new Element(*head);
+            prev = head;
             head = head->previous;
+            delete prev;
         }
 
         return temp;
     }
 
     void delete_Element_by_name(const string name)
-	{
+    {
         if (head == nullptr)
         {
             cout << "[Ошибка]: Стек пуст." << endl;
             return;
         }
 
-        Element* current = head;
-        Element* prev = nullptr;
+        LIFO object;
+        bool is_deleted = false;
 
-        while (current != nullptr)
+        while (head != nullptr)
         {
-            if (current->get_name() == name)
+            if (head->get_name() == name && !is_deleted)
             {
-                if (prev == nullptr)
-                {
-                    head = current->previous;
-                }
-                else
-                {
-                    prev->previous = current->previous;
-                }
-
-                delete current;
-
+                delete_Element();
                 cout << "Запись \"" << name << "\" успешно удалена." << endl;
-
-                return;
+                is_deleted = true;
             }
-            prev = current;
-            current = current->previous;
+            else
+            {
+                object.add_Element(*delete_Element());
+            }
         }
 
-        cout << "Запись с наименованием \"" << name << "\" не найдена." << endl;
+        while (object.head != nullptr)
+        {
+            add_Element(*object.delete_Element());
+        }
+
+        if (!is_deleted)
+        {
+            cout << "Запись с наименованием \"" << name << "\" не найдена." << endl;
+        }
     }
 
     void add_Element(Element &src_object)
